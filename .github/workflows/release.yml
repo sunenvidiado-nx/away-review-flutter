@@ -45,7 +45,7 @@ jobs:
         with:
           prerelease: false
           tag: ${{ github.ref_name }}
-          name: ${{ github.ref_name }} release
+          name: ${{ github.ref_name }}
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: "build/app/outputs/flutter-apk/*.apk"
           body: |
