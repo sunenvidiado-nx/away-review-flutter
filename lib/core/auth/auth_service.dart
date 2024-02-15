@@ -10,19 +10,31 @@ class AuthService {
   Future<void> signInWithEmailAndPassword(String email, String password) async {
     try {
       final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password);
+        email: email,
+        password: password,
+      );
 
       if (userCredential.user == null) {
         throw Exception('No user found for that email.');
       }
+
+      // TODO
+      // if (!userCredential.user!.emailVerified) {
+      //   await signOut();
+      //   throw Exception('Please check your email to verify your account.');
+      // }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         throw Exception('No user found for that email.');
       } else if (e.code == 'wrong-password') {
         throw Exception('Wrong password provided for that user.');
+      } else if (e.code == 'invalid-credential') {
+        throw Exception('Invalid credentials.');
       } else {
         throw Exception('An error occurred while signing up.');
       }
+    } on Exception catch (_) {
+      rethrow;
     } catch (e) {
       throw Exception('An error occurred while signing in.');
     }
@@ -39,7 +51,8 @@ class AuthService {
         throw Exception('No user found for that email.');
       }
 
-      await signInWithEmailAndPassword(email, password);
+      await userCredential.user!.sendEmailVerification();
+      await signOut();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         throw Exception('The password provided is too weak.');
@@ -48,8 +61,10 @@ class AuthService {
       } else {
         throw Exception('An error occurred while signing up.');
       }
+    } on Exception catch (_) {
+      rethrow;
     } catch (e) {
-      throw Exception('An error occurred while signing up.');
+      throw Exception('An error occurred while signing in.');
     }
   }
 

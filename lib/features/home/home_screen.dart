@@ -51,6 +51,7 @@ class HomeScreen extends ConsumerWidget {
           // Delay sign out because it's too damn fast
           await Future.delayed(const Duration(milliseconds: 300));
           await ref.read(authServiceProvider).signOut();
+          ref.invalidate(signedInProvider);
         }
       },
       itemBuilder: (context) {
@@ -90,7 +91,7 @@ class HomeScreen extends ConsumerWidget {
     WidgetRef ref,
   ) {
     final currentUser = ref.read(authServiceProvider).currentUser!;
-    final author = currentUser.uid == review.createdBy
+    final author = currentUser.email == review.createdByEmail
         ? '${currentUser.email!} (you)'
         : currentUser.email!;
 

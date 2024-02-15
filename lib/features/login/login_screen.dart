@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:away_review/core/auth/auth_service.dart';
 import 'package:away_review/core/extensions/build_context_extension.dart';
 import 'package:away_review/core/extensions/exception_extension.dart';
@@ -212,13 +214,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         _passwordController.text,
                       );
 
-                  // ignore: use_build_context_synchronously
-                  context.go('/home');
+                  ref.invalidate(signedInProvider);
                 }
               } on Exception catch (e) {
-                if (mounted) {
-                  context.showDefaultSnackBar(e.errorMessage);
-                }
+                context.showDefaultSnackBar(e.errorMessage);
               }
 
               setState(() {

@@ -28,7 +28,7 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
   void initState() {
     super.initState();
     final currentUser = ref.read(authServiceProvider).currentUser!;
-    _review = Review.empty().copyWith(createdBy: currentUser.uid);
+    _review = Review.empty().copyWith(createdByEmail: currentUser.email!);
   }
 
   @override

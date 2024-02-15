@@ -1,4 +1,3 @@
-import 'package:away_review/core/auth/auth_service.dart';
 import 'package:away_review/core/extensions/build_context_extension.dart';
 import 'package:away_review/core/models/review.dart';
 import 'package:away_review/core/models/review_scale.dart';
@@ -16,8 +15,6 @@ class ViewReviewScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentUser = ref.watch(authServiceProvider).currentUser!;
-
     return AnnotatedRegion(
       value: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -28,7 +25,7 @@ class ViewReviewScreen extends ConsumerWidget {
       child: Scaffold(
         backgroundColor: reviewColor,
         appBar: AppBar(
-          title: Text('By ${currentUser.email?.split('@').first}'),
+          title: Text('By ${review.createdByEmail.split('@').first}'),
           backgroundColor: reviewColor,
           actions: [
             IconButton(
@@ -57,26 +54,27 @@ class ViewReviewScreen extends ConsumerWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              review.title,
-              style: context.textTheme.headlineSmall?.copyWith(
-                color: context.colorScheme.primary,
-                fontWeight: FontWeight.bold,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                review.title,
+                style: context.textTheme.headlineSmall?.copyWith(
+                  color: context.colorScheme.primary,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              review.createdAtFormatted,
-              style: context.textTheme.titleSmall?.copyWith(
-                color: context.colorScheme.primary,
+              const SizedBox(height: 10),
+              Text(
+                review.createdAtFormatted,
+                style: context.textTheme.titleSmall?.copyWith(
+                  color: context.colorScheme.primary,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-        const Spacer(),
         const SizedBox(width: 12),
         RichText(
           text: TextSpan(

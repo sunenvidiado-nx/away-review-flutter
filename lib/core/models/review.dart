@@ -5,7 +5,7 @@ class Review {
   const Review(
     this.id,
     this.title,
-    this.createdBy,
+    this.createdByEmail,
     this.topic,
     this.duration,
     this.dramatics,
@@ -17,7 +17,7 @@ class Review {
 
   final String id;
   final String title;
-  final String createdBy;
+  final String createdByEmail;
   final int topic;
   final int duration;
   final int dramatics;
@@ -32,7 +32,7 @@ class Review {
     return Review(
       doc.id,
       data['title'] as String,
-      data['createdBy'] as String,
+      data['createdByEmail'] as String,
       data['topic'] as int,
       data['duration'] as int,
       data['dramatics'] as int,
@@ -66,7 +66,7 @@ class Review {
   Map<String, dynamic> toFirestoreObject() {
     return {
       'title': title,
-      'createdBy': createdBy,
+      'createdByEmail': createdByEmail,
       'topic': topic,
       'duration': duration,
       'dramatics': dramatics,
@@ -80,7 +80,7 @@ class Review {
   Review copyWith({
     String? id,
     String? title,
-    String? createdBy,
+    String? createdByEmail,
     int? topic,
     int? duration,
     int? dramatics,
@@ -92,7 +92,7 @@ class Review {
     return Review(
       id ?? this.id,
       title ?? this.title,
-      createdBy ?? this.createdBy,
+      createdByEmail ?? this.createdByEmail,
       topic ?? this.topic,
       duration ?? this.duration,
       dramatics ?? this.dramatics,
@@ -110,7 +110,7 @@ class Review {
     return other is Review &&
         other.id == id &&
         other.title == title &&
-        other.createdBy == createdBy &&
+        other.createdByEmail == createdByEmail &&
         other.topic == topic &&
         other.duration == duration &&
         other.dramatics == dramatics &&
@@ -123,7 +123,7 @@ class Review {
   int get hashCode {
     return id.hashCode ^
         title.hashCode ^
-        createdBy.hashCode ^
+        createdByEmail.hashCode ^
         topic.hashCode ^
         duration.hashCode ^
         dramatics.hashCode ^

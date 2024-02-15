@@ -1,8 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:away_review/core/auth/auth_service.dart';
 import 'package:away_review/core/extensions/build_context_extension.dart';
 import 'package:away_review/core/extensions/exception_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
@@ -171,7 +174,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                             _passwordController.text,
                           );
 
-                      ref.invalidate(signedInProvider);
+                      context.push('/register/confirm-email-sent');
                     } on Exception catch (e) {
                       if (mounted) {
                         context.showDefaultSnackBar(e.errorMessage);
