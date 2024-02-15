@@ -2,6 +2,7 @@
 
 import 'package:away_review/core/auth/auth_service.dart';
 import 'package:away_review/core/models/review.dart';
+import 'package:away_review/features/confirm_email_sent/confirm_email_sent_screen.dart';
 import 'package:away_review/features/create_review/create_review_screen.dart';
 import 'package:away_review/features/home/home_screen.dart';
 import 'package:away_review/features/login/login_screen.dart';
@@ -26,6 +27,12 @@ final routesProvider = Provider((ref) {
     GoRoute(
       path: '/register',
       builder: (context, state) => const RegisterScreen(),
+      routes: [
+        GoRoute(
+          path: 'confirm-email-sent',
+          builder: (context, state) => const ConfirmEmailSentScreen(),
+        ),
+      ],
     ),
     GoRoute(
       path: '/review',
