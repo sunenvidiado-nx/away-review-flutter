@@ -191,7 +191,7 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
                     child: GestureDetector(
                       onTap: () => onRatingUpdate(1),
                       child: const Text(
-                        ReviewScale.one,
+                        ReviewScale.five,
                         style: TextStyle(fontSize: 60),
                       ),
                     ),
@@ -201,7 +201,7 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
                     child: GestureDetector(
                       onTap: () => onRatingUpdate(2),
                       child: const Text(
-                        ReviewScale.two,
+                        ReviewScale.four,
                         style: TextStyle(fontSize: 60),
                       ),
                     ),
@@ -221,7 +221,7 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
                     child: GestureDetector(
                       onTap: () => onRatingUpdate(4),
                       child: const Text(
-                        ReviewScale.four,
+                        ReviewScale.two,
                         style: TextStyle(fontSize: 60),
                       ),
                     ),
@@ -231,7 +231,7 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
                     child: GestureDetector(
                       onTap: () => onRatingUpdate(5),
                       child: const Text(
-                        ReviewScale.five,
+                        ReviewScale.one,
                         style: TextStyle(fontSize: 60),
                       ),
                     ),

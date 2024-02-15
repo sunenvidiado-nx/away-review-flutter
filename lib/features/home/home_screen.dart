@@ -97,7 +97,7 @@ class HomeScreen extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
       child: Card(
-        color: ReviewScale.getColorByRating(review.average),
+        color: ReviewScale.getColorByRating(review.average, weight: 100),
         elevation: 3,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 abstract class ReviewScale {
-  static const one = '🙂';
-  static const two = '😐';
+  static const one = '😡';
+  static const two = '😠';
   static const three = '🙁';
-  static const four = '😠';
-  static const five = '😡';
+  static const four = '😐';
+  static const five = '🙂';
 
   static String getEmojiByRating(num rating) {
     return switch (rating) {
@@ -24,13 +24,16 @@ abstract class ReviewScale {
   static const fourColor = Colors.lime;
   static const fiveColor = Colors.lightGreen;
 
-  static Color getColorByRating(num rating) {
+  static Color getColorByRating(
+    num rating, {
+    int weight = 500,
+  }) {
     return switch (rating) {
-      1 => oneColor,
-      2 => twoColor,
-      3 => threeColor,
-      4 => fourColor,
-      5 => fiveColor,
+      1 => oneColor[weight]!,
+      2 => twoColor[weight]!,
+      3 => threeColor[weight]!,
+      4 => fourColor[weight]!,
+      5 => fiveColor[weight]!,
       _ => throw Exception('Invalid rating: $rating'),
     };
   }
