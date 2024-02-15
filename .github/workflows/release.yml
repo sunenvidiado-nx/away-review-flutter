@@ -33,7 +33,7 @@ jobs:
         run: flutter pub get
 
       - name: Build android
-        run: flutter build apk --release
+        run: flutter build apk --release --build-number=${{ github.run_number }}
 
       - name: Create Release
         uses: ncipollo/release-action@v1.14.0
