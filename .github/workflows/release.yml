@@ -30,11 +30,15 @@ jobs:
         with:
           flutter-version: '3.16.x'
 
+      - name: Create Firebase options file
+        run: |
+          echo "${{ secrets.FIREBASE_OPTIONS_BASE64 }}" | base64 --decode > lib/firebase_options.dart
+
       - name: Download dependencies
         run: flutter pub get
 
       - name: Build android
-        run: flutter build apk --release --build-number=${{ github.run_number }}
+        run: flutter build apk --release --build-number=${{ github.run_number }} --split-per-abi
 
       - name: Create Release
         uses: ncipollo/release-action@v1.14.0
