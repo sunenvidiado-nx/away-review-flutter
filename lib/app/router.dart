@@ -31,7 +31,7 @@ final routesProvider = Provider((ref) {
         // Custom animation so that the `CreateReviewScreen` slides up from the bottom
         return CustomTransitionPage(
           child: const CreateReviewScreen(),
-          transitionDuration: const Duration(milliseconds: 150),
+          transitionDuration: const Duration(milliseconds: 200),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SlideTransition(
               position: Tween<Offset>(
@@ -39,7 +39,7 @@ final routesProvider = Provider((ref) {
                 end: Offset.zero,
               ).animate(CurvedAnimation(
                 parent: animation,
-                curve: Curves.easeOut,
+                curve: Curves.easeInOut,
               )),
               child: child,
             );

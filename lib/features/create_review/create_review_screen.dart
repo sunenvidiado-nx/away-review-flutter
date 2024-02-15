@@ -2,8 +2,8 @@ import 'package:away_review/core/auth/auth_service.dart';
 import 'package:away_review/core/extensions/build_context_extension.dart';
 import 'package:away_review/core/models/review.dart';
 import 'package:away_review/core/repositories/review_repository.dart';
+import 'package:away_review/features/home/reviews_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -19,6 +19,7 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
   late Review _review;
 
   final _noteController = TextEditingController();
+  final _titleController = TextEditingController();
 
   var _isPublishing = false;
 
@@ -30,9 +31,17 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
   }
 
   @override
+  void dispose() {
+    _noteController.dispose();
+    _titleController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: const Text('Create review'),
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: context.pop,
@@ -40,40 +49,55 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
       ),
       body: CustomScrollView(
         slivers: [
-          _buildHeader(),
+          _buildTitleTextField(),
           _buildRating(
+            rating: _review.topic,
             title: 'Topic',
             subtitle: 'Lorem ipsum dolor sit amet, consectetur.',
             onRatingUpdate: (rating) {
-              _review = _review.copyWith(topic: rating.toInt());
+              setState(() {
+                _review = _review.copyWith(topic: rating);
+              });
             },
           ),
           _buildRating(
+            rating: _review.duration,
             title: 'Duration',
             subtitle: 'Lorem ipsum dolor sit amet, consectetur.',
             onRatingUpdate: (rating) {
-              _review = _review.copyWith(duration: rating.toInt());
+              setState(() {
+                _review = _review.copyWith(duration: rating);
+              });
             },
           ),
           _buildRating(
+            rating: _review.dramatics,
             title: 'Dramatics',
             subtitle: 'Lorem ipsum dolor sit amet, consectetur.',
             onRatingUpdate: (rating) {
-              _review = _review.copyWith(dramatics: rating.toInt());
+              setState(() {
+                _review = _review.copyWith(dramatics: rating);
+              });
             },
           ),
           _buildRating(
+            rating: _review.emotionalImpact,
             title: 'Emotional Impact',
             subtitle: 'Lorem ipsum dolor sit amet, consectetur.',
             onRatingUpdate: (rating) {
-              _review = _review.copyWith(emotionalImpact: rating.toInt());
+              setState(() {
+                _review = _review.copyWith(emotionalImpact: rating);
+              });
             },
           ),
           _buildRating(
+            rating: _review.aftermath,
             title: 'Aftermath',
             subtitle: 'Lorem ipsum dolor sit amet, consectetur.',
             onRatingUpdate: (rating) {
-              _review = _review.copyWith(aftermath: rating.toInt());
+              setState(() {
+                _review = _review.copyWith(aftermath: rating);
+              });
             },
           ),
           SliverToBoxAdapter(
@@ -82,7 +106,7 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
               thickness: 1,
             ),
           ),
-          _buildNotesField(),
+          _buildNotesTextField(),
           SliverToBoxAdapter(
             child: Divider(
               color: context.colorScheme.secondary.withOpacity(0.1),
@@ -97,22 +121,44 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildTitleTextField() {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 28.0),
-        child: Text(
-          'Create a review',
-          style: context.textTheme.headlineLarge,
+        padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Title',
+              style: context.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Lorem ipsum dolor sit amet, consectetur',
+              style: context.textTheme.titleMedium?.copyWith(
+                color: context.colorScheme.secondary.withOpacity(0.8),
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _titleController,
+              decoration: const InputDecoration(
+                hintText: "Ano pinagawayan nyo",
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
   Widget _buildRating({
+    required int rating,
     required String title,
     required String subtitle,
-    required Function(double) onRatingUpdate,
+    required Function(int) onRatingUpdate,
   }) {
     return SliverToBoxAdapter(
       child: Padding(
@@ -122,49 +168,75 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
           children: [
             Text(
               title,
-              style: context.textTheme.headlineSmall?.copyWith(
+              style: context.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               subtitle,
-              style: context.textTheme.titleLarge?.copyWith(
-                color: context.colorScheme.secondary.withOpacity(0.6),
+              style: context.textTheme.titleMedium?.copyWith(
+                color: context.colorScheme.secondary.withOpacity(0.8),
               ),
             ),
             const SizedBox(height: 16),
-            RatingBar.builder(
-              initialRating: 0,
-              itemCount: 5,
-              glow: false,
-              itemSize: 60,
-              tapOnlyMode: true,
-              unratedColor: context.colorScheme.secondary.withOpacity(0.4),
-              itemBuilder: (context, index) => switch (index) {
-                0 => const Icon(
-                    Icons.sentiment_very_dissatisfied,
-                    color: Colors.red,
+            SizedBox(
+              width: double.infinity,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconButton(
+                    iconSize: 60,
+                    onPressed: () => onRatingUpdate(1),
+                    icon: Icon(
+                      Icons.sentiment_very_dissatisfied,
+                      color: rating == 1
+                          ? Colors.deepOrange
+                          : context.colorScheme.secondary.withOpacity(0.35),
+                    ),
                   ),
-                1 => Icon(
-                    Icons.sentiment_dissatisfied,
-                    color: Colors.red[300],
+                  IconButton(
+                    iconSize: 60,
+                    onPressed: () => onRatingUpdate(2),
+                    icon: Icon(
+                      Icons.sentiment_dissatisfied,
+                      color: rating == 2
+                          ? Colors.orange
+                          : context.colorScheme.secondary.withOpacity(0.35),
+                    ),
                   ),
-                2 => const Icon(
-                    Icons.sentiment_neutral,
-                    color: Colors.amber,
+                  IconButton(
+                    iconSize: 60,
+                    onPressed: () => onRatingUpdate(3),
+                    icon: Icon(
+                      Icons.sentiment_neutral,
+                      color: rating == 3
+                          ? Colors.amber
+                          : context.colorScheme.secondary.withOpacity(0.35),
+                    ),
                   ),
-                3 => const Icon(
-                    Icons.sentiment_satisfied,
-                    color: Colors.lightGreen,
+                  IconButton(
+                    iconSize: 60,
+                    onPressed: () => onRatingUpdate(4),
+                    icon: Icon(
+                      Icons.sentiment_satisfied,
+                      color: rating == 4
+                          ? Colors.lime
+                          : context.colorScheme.secondary.withOpacity(0.35),
+                    ),
                   ),
-                4 => const Icon(
-                    Icons.sentiment_very_satisfied,
-                    color: Colors.green,
+                  IconButton(
+                    iconSize: 60,
+                    onPressed: () => onRatingUpdate(5),
+                    icon: Icon(
+                      Icons.sentiment_very_satisfied,
+                      color: rating == 5
+                          ? Colors.lightGreen
+                          : context.colorScheme.secondary.withOpacity(0.35),
+                    ),
                   ),
-                _ => throw UnimplementedError(),
-              },
-              onRatingUpdate: onRatingUpdate,
+                ],
+              ),
             ),
           ],
         ),
@@ -172,7 +244,7 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
     );
   }
 
-  Widget _buildNotesField() {
+  Widget _buildNotesTextField() {
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 16.0),
@@ -181,27 +253,27 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
           children: [
             Text(
               'Additional notes',
-              style: context.textTheme.headlineSmall?.copyWith(
+              style: context.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 8),
             Text(
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sit amet.',
-              style: context.textTheme.titleLarge?.copyWith(
-                color: context.colorScheme.secondary.withOpacity(0.6),
+              style: context.textTheme.titleMedium?.copyWith(
+                color: context.colorScheme.secondary.withOpacity(0.8),
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 16),
             TextField(
               controller: _noteController,
               minLines: 8,
               maxLines: 12,
               decoration: InputDecoration(
-                hintText: 'Write your thoughts here...',
+                hintText: 'Write here (optional)',
                 hintStyle: context.textTheme.titleLarge?.copyWith(
                   fontSize: 18,
-                  color: context.colorScheme.secondary.withOpacity(0.6),
+                  color: context.colorScheme.secondary.withOpacity(0.8),
                 ),
               ),
               style: context.textTheme.titleLarge?.copyWith(
@@ -228,20 +300,30 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
                   });
 
                   try {
-                    _review = _review.copyWith(notes: _noteController.text);
+                    if (_titleController.text.isEmpty) {
+                      throw 'Please specify a title.';
+                    }
+
+                    _review = _review.copyWith(
+                      notes: _noteController.text,
+                      title: _titleController.text,
+                    );
 
                     if (_review.topic == 0 ||
                         _review.duration == 0 ||
                         _review.dramatics == 0 ||
                         _review.emotionalImpact == 0 ||
                         _review.aftermath == 0) {
-                      throw 'Please rate all the topics';
+                      throw 'Please add ratings for all items.';
                     }
 
-                    await ref
-                        .read(reviewRepositoryProvider)
-                        .addReview(_review)
-                        .then((_) => context.go('/'));
+                    await ref.read(reviewRepositoryProvider).addReview(_review);
+
+                    // ignore: unused_result
+                    await ref.refresh(reviewsProvider.future);
+
+                    // ignore: use_build_context_synchronously
+                    context.go('/');
                   } catch (e) {
                     // ignore: use_build_context_synchronously
                     context.showDefaultSnackBar(e.toString());
