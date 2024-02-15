@@ -1,10 +1,12 @@
 // ignore_for_file: avoid_print
 
 import 'package:away_review/core/auth/auth_service.dart';
+import 'package:away_review/core/models/review.dart';
 import 'package:away_review/features/create_review/create_review_screen.dart';
 import 'package:away_review/features/home/home_screen.dart';
 import 'package:away_review/features/login/login_screen.dart';
 import 'package:away_review/features/register/register_screen.dart';
+import 'package:away_review/features/view_review/view_review_screen.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +26,10 @@ final routesProvider = Provider((ref) {
     GoRoute(
       path: '/register',
       builder: (context, state) => const RegisterScreen(),
+    ),
+    GoRoute(
+      path: '/review',
+      builder: (context, state) => ViewReviewScreen(state.extra! as Review),
     ),
     GoRoute(
       path: '/create-review',

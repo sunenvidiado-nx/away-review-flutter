@@ -211,6 +211,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         _emailController.text,
                         _passwordController.text,
                       );
+
+                  // ignore: use_build_context_synchronously
+                  context.go('/home');
                 }
               } on Exception catch (e) {
                 if (mounted) {
