@@ -1,0 +1,30 @@
+name: Run tests
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verification:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.x'
+
+      - name: Download dependencies
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze --no-pub
+
+      - name: Format
+        run: dart format --set-exit-if-changed .
+
+      - name: Run tests
+        run: flutter test --no-pub --test-randomize-ordering-seed random

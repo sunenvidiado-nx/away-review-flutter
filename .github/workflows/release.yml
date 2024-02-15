@@ -1,0 +1,48 @@
+name: Create release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Create release
+    runs-on: [ self-hosted, linux, x64 ]
+    permissions:
+      contents: read
+      packages: write
+      actions: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '15'
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.x'
+
+      - name: Download dependencies
+        run: flutter pub get
+
+      - name: Build android
+        run: flutter build apk --release
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1.14.0
+        with:
+          draft: true
+          tag: ${{ github.ref }}
+          name: Release ${{ github.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: build/app/outputs/flutter-apk/*.apk
+          body: |
+            This is a release for ${{ github.ref }}.
+            

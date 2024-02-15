@@ -1,0 +1,30 @@
+{
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    ".gitignore": ".gitattributes, .gitmodules, .gitmessage, .mailmap, .git-blame*",
+    "pubspec.yaml": "pubspec.lock, *.yaml, *.yml",
+    "*.dart": "$(capture).*.dart",
+    "Jenkinsfile.*": "Jenkinsfile.$(capture), Jenkinsfile.$(capture).nightly"
+  },
+  "dart.flutterSdkPath": ".fvm/flutter_sdk",
+  "search.exclude": {
+    "**/.fvm": true
+  },
+  "files.watcherExclude": {
+    "**/.fvm": true
+  },
+  // "dart.lineLength": 120,
+  "files.exclude": {
+    ".idea/": true,
+    // ".github/": true,
+    ".dart_tool/": true,
+    "coverage/": true,
+    ".flutter-plugins": true,
+    ".metadata": true,
+    ".flutter-plugins-dependencies": true,
+    ".fvm": true,
+    "*.iml": true,
+    "*.toml": true
+  }
+}
