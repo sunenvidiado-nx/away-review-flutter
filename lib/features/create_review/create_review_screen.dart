@@ -1,6 +1,6 @@
 import 'package:away_review/core/auth/auth_service.dart';
 import 'package:away_review/core/extensions/build_context_extension.dart';
-import 'package:away_review/core/models/emoji_scale.dart';
+import 'package:away_review/core/models/review_scale.dart';
 import 'package:away_review/core/models/review.dart';
 import 'package:away_review/core/repositories/review_repository.dart';
 import 'package:away_review/features/home/reviews_provider.dart';
@@ -191,7 +191,7 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
                     child: GestureDetector(
                       onTap: () => onRatingUpdate(1),
                       child: const Text(
-                        EmojiScale.one,
+                        ReviewScale.one,
                         style: TextStyle(fontSize: 60),
                       ),
                     ),
@@ -201,7 +201,7 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
                     child: GestureDetector(
                       onTap: () => onRatingUpdate(2),
                       child: const Text(
-                        EmojiScale.two,
+                        ReviewScale.two,
                         style: TextStyle(fontSize: 60),
                       ),
                     ),
@@ -211,7 +211,7 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
                     child: GestureDetector(
                       onTap: () => onRatingUpdate(3),
                       child: const Text(
-                        EmojiScale.three,
+                        ReviewScale.three,
                         style: TextStyle(fontSize: 60),
                       ),
                     ),
@@ -221,7 +221,7 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
                     child: GestureDetector(
                       onTap: () => onRatingUpdate(4),
                       child: const Text(
-                        EmojiScale.four,
+                        ReviewScale.four,
                         style: TextStyle(fontSize: 60),
                       ),
                     ),
@@ -231,7 +231,7 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
                     child: GestureDetector(
                       onTap: () => onRatingUpdate(5),
                       child: const Text(
-                        EmojiScale.five,
+                        ReviewScale.five,
                         style: TextStyle(fontSize: 60),
                       ),
                     ),

@@ -1,6 +1,6 @@
 import 'package:away_review/core/auth/auth_service.dart';
 import 'package:away_review/core/extensions/build_context_extension.dart';
-import 'package:away_review/core/models/emoji_scale.dart';
+import 'package:away_review/core/models/review_scale.dart';
 import 'package:away_review/core/models/review.dart';
 import 'package:away_review/features/home/reviews_provider.dart';
 import 'package:flutter/material.dart';
@@ -97,7 +97,7 @@ class HomeScreen extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
       child: Card(
-        color: _getRatingColor(review.average),
+        color: ReviewScale.getColorByRating(review.average),
         elevation: 3,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
@@ -118,7 +118,10 @@ class HomeScreen extends ConsumerWidget {
                         ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   const Spacer(),
-                  _getEmoji(review.average),
+                  Text(
+                    ReviewScale.getEmojiByRating(review.average),
+                    style: const TextStyle(fontSize: 30),
+                  ),
                 ],
               ),
               const SizedBox(height: 10),
@@ -138,34 +141,6 @@ class HomeScreen extends ConsumerWidget {
         ),
       ),
     );
-  }
-
-  Text _getEmoji(double average) {
-    if (average > 4) {
-      return const Text(EmojiScale.one, style: TextStyle(fontSize: 30));
-    } else if (average > 3) {
-      return const Text(EmojiScale.two, style: TextStyle(fontSize: 30));
-    } else if (average > 2) {
-      return const Text(EmojiScale.three, style: TextStyle(fontSize: 30));
-    } else if (average > 1) {
-      return const Text(EmojiScale.four, style: TextStyle(fontSize: 30));
-    } else {
-      return const Text(EmojiScale.five, style: TextStyle(fontSize: 30));
-    }
-  }
-
-  Color _getRatingColor(double average) {
-    if (average > 4) {
-      return Colors.lightGreen[100]!;
-    } else if (average > 3) {
-      return Colors.lime[100]!;
-    } else if (average > 2) {
-      return Colors.amber[100]!;
-    } else if (average > 1) {
-      return Colors.orange[100]!;
-    } else {
-      return Colors.red[100]!;
-    }
   }
 
   Widget _buildAddReviewButton(BuildContext context) {
