@@ -78,8 +78,9 @@ class HomeScreen extends ConsumerWidget {
     return ListView.builder(
       key: ValueKey(reviews.length),
       itemCount: reviews.length,
-      itemBuilder: (context, index) =>
-          _buildListItem(reviews[index], context, ref),
+      itemBuilder: (context, index) {
+        return _buildListItem(reviews[index], context, ref);
+      },
     );
   }
 
@@ -120,7 +121,7 @@ class HomeScreen extends ConsumerWidget {
                   _getEmoji(review.average),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 10),
               Text(
                 '${review.createdAtFormatted} - $author',
                 style: Theme.of(context).textTheme.titleSmall,
