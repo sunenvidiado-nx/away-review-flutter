@@ -19,12 +19,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Get the tag
-        id: get_tag
-        run: echo "::set-output name=tag::${{ github.ref }}"
-        env:
-          TAG_REF: ${{ github.ref }}
-
       - name: Set up Java
         uses: actions/setup-java@v2
         with:
@@ -50,10 +44,10 @@ jobs:
         uses: ncipollo/release-action@v1.14.0
         with:
           prerelease: false
-          tag: ${{ steps.get_tag.outputs.tag }}
-          name: ${{ steps.get_tag.outputs.tag }} release
+          tag: ${{ github.ref_name }}
+          name: ${{ github.ref_name }} release
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: "build/app/outputs/flutter-apk/*.apk"
           body: |
-            This is a release for ${{ steps.get_tag.outputs.tag }}
+            This is a release for ${{ github.ref_name }}
             
