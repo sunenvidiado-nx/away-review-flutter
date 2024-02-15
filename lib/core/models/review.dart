@@ -60,7 +60,7 @@ class Review {
       return 'Today at ${DateFormat.jm().format(createdAt.toLocal())}';
     }
 
-    return DateFormat.yMMMMd().format(createdAt.toLocal());
+    return DateFormat.yMMMd().format(createdAt.toLocal());
   }
 
   Map<String, dynamic> toFirestoreObject() {

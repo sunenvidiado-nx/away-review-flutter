@@ -1,5 +1,6 @@
 import 'package:away_review/core/auth/auth_service.dart';
 import 'package:away_review/core/extensions/build_context_extension.dart';
+import 'package:away_review/core/models/emoji_scale.dart';
 import 'package:away_review/core/models/review.dart';
 import 'package:away_review/core/repositories/review_repository.dart';
 import 'package:away_review/features/home/reviews_provider.dart';
@@ -21,7 +22,7 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
   final _noteController = TextEditingController();
   final _titleController = TextEditingController();
 
-  var _isPublishing = false;
+  var _isLoading = false;
 
   @override
   void initState() {
@@ -114,7 +115,7 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
             ),
           ),
           const SliverToBoxAdapter(child: SizedBox(height: 16)),
-          _buildPublishReviewButton(),
+          _buildAddReviewButton(),
           const SliverToBoxAdapter(child: SizedBox(height: 64)),
         ],
       ),
@@ -185,54 +186,54 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  IconButton(
-                    iconSize: 60,
-                    onPressed: () => onRatingUpdate(1),
-                    icon: Icon(
-                      Icons.sentiment_very_dissatisfied,
-                      color: rating == 1
-                          ? Colors.deepOrange
-                          : context.colorScheme.secondary.withOpacity(0.35),
+                  Opacity(
+                    opacity: rating == 1 ? 1 : 0.3,
+                    child: GestureDetector(
+                      onTap: () => onRatingUpdate(1),
+                      child: const Text(
+                        EmojiScale.one,
+                        style: TextStyle(fontSize: 60),
+                      ),
                     ),
                   ),
-                  IconButton(
-                    iconSize: 60,
-                    onPressed: () => onRatingUpdate(2),
-                    icon: Icon(
-                      Icons.sentiment_dissatisfied,
-                      color: rating == 2
-                          ? Colors.orange
-                          : context.colorScheme.secondary.withOpacity(0.35),
+                  Opacity(
+                    opacity: rating == 2 ? 1 : 0.3,
+                    child: GestureDetector(
+                      onTap: () => onRatingUpdate(2),
+                      child: const Text(
+                        EmojiScale.two,
+                        style: TextStyle(fontSize: 60),
+                      ),
                     ),
                   ),
-                  IconButton(
-                    iconSize: 60,
-                    onPressed: () => onRatingUpdate(3),
-                    icon: Icon(
-                      Icons.sentiment_neutral,
-                      color: rating == 3
-                          ? Colors.amber
-                          : context.colorScheme.secondary.withOpacity(0.35),
+                  Opacity(
+                    opacity: rating == 3 ? 1 : 0.3,
+                    child: GestureDetector(
+                      onTap: () => onRatingUpdate(3),
+                      child: const Text(
+                        EmojiScale.three,
+                        style: TextStyle(fontSize: 60),
+                      ),
                     ),
                   ),
-                  IconButton(
-                    iconSize: 60,
-                    onPressed: () => onRatingUpdate(4),
-                    icon: Icon(
-                      Icons.sentiment_satisfied,
-                      color: rating == 4
-                          ? Colors.lime
-                          : context.colorScheme.secondary.withOpacity(0.35),
+                  Opacity(
+                    opacity: rating == 4 ? 1 : 0.3,
+                    child: GestureDetector(
+                      onTap: () => onRatingUpdate(4),
+                      child: const Text(
+                        EmojiScale.four,
+                        style: TextStyle(fontSize: 60),
+                      ),
                     ),
                   ),
-                  IconButton(
-                    iconSize: 60,
-                    onPressed: () => onRatingUpdate(5),
-                    icon: Icon(
-                      Icons.sentiment_very_satisfied,
-                      color: rating == 5
-                          ? Colors.lightGreen
-                          : context.colorScheme.secondary.withOpacity(0.35),
+                  Opacity(
+                    opacity: rating == 5 ? 1 : 0.3,
+                    child: GestureDetector(
+                      onTap: () => onRatingUpdate(5),
+                      child: const Text(
+                        EmojiScale.five,
+                        style: TextStyle(fontSize: 60),
+                      ),
                     ),
                   ),
                 ],
@@ -287,16 +288,16 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
     );
   }
 
-  Widget _buildPublishReviewButton() {
+  Widget _buildAddReviewButton() {
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ElevatedButton(
-          onPressed: _isPublishing
+          onPressed: _isLoading
               ? null
               : () async {
                   setState(() {
-                    _isPublishing = true;
+                    _isLoading = true;
                   });
 
                   try {
@@ -329,11 +330,11 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
                     context.showDefaultSnackBar(e.toString());
                   } finally {
                     setState(() {
-                      _isPublishing = false;
+                      _isLoading = false;
                     });
                   }
                 },
-          child: const Text('Publish review'),
+          child: const Text('Submit'),
         ),
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:away_review/core/auth/auth_service.dart';
 import 'package:away_review/core/extensions/build_context_extension.dart';
+import 'package:away_review/core/models/emoji_scale.dart';
 import 'package:away_review/core/models/review.dart';
 import 'package:away_review/features/home/reviews_provider.dart';
 import 'package:flutter/material.dart';
@@ -77,48 +78,34 @@ class HomeScreen extends ConsumerWidget {
     return ListView.builder(
       key: ValueKey(reviews.length),
       itemCount: reviews.length,
-      itemBuilder: (context, index) => _buildListItem(reviews[index], context),
+      itemBuilder: (context, index) =>
+          _buildListItem(reviews[index], context, ref),
     );
   }
 
-  Widget _buildListItem(Review review, BuildContext context) {
-    final ratingColor = review.average > 4
-        ? Colors.lightGreen[100]
-        : review.average > 3
-            ? Colors.lime[100]
-            : review.average > 2
-                ? Colors.amber[100]
-                : review.average > 1
-                    ? Colors.orange[100]
-                    : Colors.deepOrange[100];
+  Widget _buildListItem(
+    Review review,
+    BuildContext context,
+    WidgetRef ref,
+  ) {
+    final currentUser = ref.read(authServiceProvider).currentUser!;
+    final author = currentUser.uid == review.createdBy
+        ? '${currentUser.email!} (you)'
+        : currentUser.email!;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
       child: Card(
-        color: ratingColor,
+        color: _getRatingColor(review.average),
         elevation: 3,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  _buildIcon(review.average, context),
-                  const SizedBox(width: 8),
-                  Text(
-                    review.createdAtFormatted,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: context.colorScheme.secondary,
-                          fontWeight: FontWeight.w600,
-                        ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -130,14 +117,13 @@ class HomeScreen extends ConsumerWidget {
                         ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   const Spacer(),
-                  Text(
-                    '${review.average.toStringAsFixed(0)}/5',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineSmall
-                        ?.copyWith(fontWeight: FontWeight.w900),
-                  ),
+                  _getEmoji(review.average),
                 ],
+              ),
+              const SizedBox(height: 16),
+              Text(
+                '${review.createdAtFormatted} - $author',
+                style: Theme.of(context).textTheme.titleSmall,
               ),
               const SizedBox(height: 12),
               Text(
@@ -153,20 +139,32 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildIcon(double rating, BuildContext context) {
-    return Icon(
-      rating >= 4
-          ? Icons.sentiment_very_satisfied
-          : rating >= 3
-              ? Icons.sentiment_satisfied
-              : rating >= 2
-                  ? Icons.sentiment_neutral
-                  : rating >= 1
-                      ? Icons.sentiment_dissatisfied
-                      : Icons.sentiment_very_dissatisfied,
-      color: context.colorScheme.primary,
-      size: 30,
-    );
+  Text _getEmoji(double average) {
+    if (average > 4) {
+      return const Text(EmojiScale.one, style: TextStyle(fontSize: 30));
+    } else if (average > 3) {
+      return const Text(EmojiScale.two, style: TextStyle(fontSize: 30));
+    } else if (average > 2) {
+      return const Text(EmojiScale.three, style: TextStyle(fontSize: 30));
+    } else if (average > 1) {
+      return const Text(EmojiScale.four, style: TextStyle(fontSize: 30));
+    } else {
+      return const Text(EmojiScale.five, style: TextStyle(fontSize: 30));
+    }
+  }
+
+  Color _getRatingColor(double average) {
+    if (average > 4) {
+      return Colors.lightGreen[100]!;
+    } else if (average > 3) {
+      return Colors.lime[100]!;
+    } else if (average > 2) {
+      return Colors.amber[100]!;
+    } else if (average > 1) {
+      return Colors.orange[100]!;
+    } else {
+      return Colors.red[100]!;
+    }
   }
 
   Widget _buildAddReviewButton(BuildContext context) {
