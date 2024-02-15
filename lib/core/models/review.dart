@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class Review {
   const Review(
     this.id,
+    this.title,
     this.createdBy,
     this.topic,
     this.duration,
@@ -14,6 +16,7 @@ class Review {
   );
 
   final String id;
+  final String title;
   final String createdBy;
   final int topic;
   final int duration;
@@ -28,6 +31,7 @@ class Review {
 
     return Review(
       doc.id,
+      data['title'] as String,
       data['createdBy'] as String,
       data['topic'] as int,
       data['duration'] as int,
@@ -39,10 +43,29 @@ class Review {
     );
   }
 
-  factory Review.empty() => Review('', '', 0, 0, 0, 0, 0, '', DateTime.now());
+  factory Review.empty() =>
+      Review('', '', '', 0, 0, 0, 0, 0, '', DateTime.now());
+
+  double get average {
+    final total = topic + duration + dramatics + emotionalImpact + aftermath;
+    return (total / 5);
+  }
+
+  String get createdAtFormatted {
+    final now = DateTime.now();
+
+    if (createdAt.year == now.year &&
+        createdAt.month == now.month &&
+        createdAt.day == now.day) {
+      return 'Today at ${DateFormat.jm().format(createdAt.toLocal())}';
+    }
+
+    return DateFormat.yMMMMd().format(createdAt.toLocal());
+  }
 
   Map<String, dynamic> toFirestoreObject() {
     return {
+      'title': title,
       'createdBy': createdBy,
       'topic': topic,
       'duration': duration,
@@ -56,6 +79,7 @@ class Review {
 
   Review copyWith({
     String? id,
+    String? title,
     String? createdBy,
     int? topic,
     int? duration,
@@ -67,6 +91,7 @@ class Review {
   }) {
     return Review(
       id ?? this.id,
+      title ?? this.title,
       createdBy ?? this.createdBy,
       topic ?? this.topic,
       duration ?? this.duration,
@@ -84,6 +109,7 @@ class Review {
 
     return other is Review &&
         other.id == id &&
+        other.title == title &&
         other.createdBy == createdBy &&
         other.topic == topic &&
         other.duration == duration &&
@@ -96,6 +122,7 @@ class Review {
   @override
   int get hashCode {
     return id.hashCode ^
+        title.hashCode ^
         createdBy.hashCode ^
         topic.hashCode ^
         duration.hashCode ^

@@ -12,6 +12,7 @@ final _lightTheme = ThemeData(
   textTheme: _textTheme,
   colorScheme: _colorScheme,
   appBarTheme: _appBarTheme,
+  popupMenuTheme: _popupMenuTheme,
   elevatedButtonTheme: _elevatedButtonTheme,
   inputDecorationTheme: _inputDecorationTheme,
   floatingActionButtonTheme: _floatingActionButtonTheme,
@@ -94,22 +95,34 @@ AppBarTheme get _appBarTheme {
     backgroundColor: AppColors.background,
     foregroundColor: AppColors.primary,
     elevation: 0,
-    scrolledUnderElevation: 0.5,
+    scrolledUnderElevation: 3,
     titleTextStyle: GoogleFonts.rubik(
       fontSize: 20,
-      fontWeight: FontWeight.bold,
-      color: AppColors.primary,
+      fontWeight: FontWeight.w500,
+      color: _colorScheme.primary,
     ),
   );
 }
 
 FloatingActionButtonThemeData get _floatingActionButtonTheme {
   return FloatingActionButtonThemeData(
-    backgroundColor: _colorScheme.onSecondary,
-    foregroundColor: _colorScheme.primary,
+    backgroundColor: _colorScheme.primary,
+    foregroundColor: _colorScheme.background,
     extendedTextStyle: GoogleFonts.rubik(
       fontSize: 16,
       fontWeight: FontWeight.w500,
+    ),
+  );
+}
+
+PopupMenuThemeData get _popupMenuTheme {
+  return PopupMenuThemeData(
+    color: _colorScheme.background,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    textStyle: GoogleFonts.rubik(
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      color: _colorScheme.primary,
     ),
   );
 }
