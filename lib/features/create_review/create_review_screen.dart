@@ -116,7 +116,6 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
           ),
           const SliverToBoxAdapter(child: SizedBox(height: 16)),
           _buildAddReviewButton(),
-          const SliverToBoxAdapter(child: SizedBox(height: 64)),
         ],
       ),
     );
@@ -192,7 +191,7 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
                       onTap: () => onRatingUpdate(1),
                       child: const Text(
                         ReviewScale.five,
-                        style: TextStyle(fontSize: 60),
+                        style: TextStyle(fontSize: 50),
                       ),
                     ),
                   ),
@@ -202,7 +201,7 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
                       onTap: () => onRatingUpdate(2),
                       child: const Text(
                         ReviewScale.four,
-                        style: TextStyle(fontSize: 60),
+                        style: TextStyle(fontSize: 50),
                       ),
                     ),
                   ),
@@ -212,7 +211,7 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
                       onTap: () => onRatingUpdate(3),
                       child: const Text(
                         ReviewScale.three,
-                        style: TextStyle(fontSize: 60),
+                        style: TextStyle(fontSize: 50),
                       ),
                     ),
                   ),
@@ -222,7 +221,7 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
                       onTap: () => onRatingUpdate(4),
                       child: const Text(
                         ReviewScale.two,
-                        style: TextStyle(fontSize: 60),
+                        style: TextStyle(fontSize: 50),
                       ),
                     ),
                   ),
@@ -232,7 +231,7 @@ class _CreateReviewScreenState extends ConsumerState<CreateReviewScreen> {
                       onTap: () => onRatingUpdate(5),
                       child: const Text(
                         ReviewScale.one,
-                        style: TextStyle(fontSize: 60),
+                        style: TextStyle(fontSize: 50),
                       ),
                     ),
                   ),

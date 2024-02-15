@@ -8,14 +8,17 @@ abstract class ReviewScale {
   static const five = '🙂';
 
   static String getEmojiByRating(num rating) {
-    return switch (rating) {
-      1 => one,
-      2 => two,
-      3 => three,
-      4 => four,
-      5 => five,
-      _ => throw Exception('Invalid rating: $rating'),
-    };
+    if (rating > 4) {
+      return one;
+    } else if (rating > 3) {
+      return two;
+    } else if (rating > 2) {
+      return three;
+    } else if (rating > 1) {
+      return four;
+    } else {
+      return five;
+    }
   }
 
   static const oneColor = Colors.red;
@@ -28,13 +31,16 @@ abstract class ReviewScale {
     num rating, {
     int weight = 500,
   }) {
-    return switch (rating) {
-      1 => oneColor[weight]!,
-      2 => twoColor[weight]!,
-      3 => threeColor[weight]!,
-      4 => fourColor[weight]!,
-      5 => fiveColor[weight]!,
-      _ => throw Exception('Invalid rating: $rating'),
-    };
+    if (rating > 4) {
+      return oneColor[weight]!;
+    } else if (rating > 3) {
+      return twoColor[weight]!;
+    } else if (rating > 2) {
+      return threeColor[weight]!;
+    } else if (rating > 1) {
+      return fourColor[weight]!;
+    } else {
+      return fiveColor[weight]!;
+    }
   }
 }

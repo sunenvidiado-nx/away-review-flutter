@@ -10,6 +10,7 @@ final themeProvider = Provider((ref) {
 
 final _lightTheme = ThemeData(
   textTheme: _textTheme,
+  cardTheme: _cardTheme,
   colorScheme: _colorScheme,
   appBarTheme: _appBarTheme,
   popupMenuTheme: _popupMenuTheme,
@@ -95,6 +96,7 @@ AppBarTheme get _appBarTheme {
     backgroundColor: AppColors.background,
     foregroundColor: AppColors.primary,
     elevation: 0,
+    centerTitle: true,
     scrolledUnderElevation: 3,
     titleTextStyle: GoogleFonts.rubik(
       fontSize: 20,
@@ -124,5 +126,12 @@ PopupMenuThemeData get _popupMenuTheme {
       fontWeight: FontWeight.w500,
       color: _colorScheme.primary,
     ),
+  );
+}
+
+CardTheme get _cardTheme {
+  return CardTheme(
+    elevation: 3,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
   );
 }
