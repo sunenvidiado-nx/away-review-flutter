@@ -7,6 +7,8 @@ class AuthService {
 
   final FirebaseAuth _firebaseAuth;
 
+  User? get currentUser => _firebaseAuth.currentUser;
+
   Future<void> signInWithEmailAndPassword(String email, String password) async {
     try {
       final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
@@ -18,11 +20,10 @@ class AuthService {
         throw Exception('No user found for that email.');
       }
 
-      // TODO
-      // if (!userCredential.user!.emailVerified) {
-      //   await signOut();
-      //   throw Exception('Please check your email to verify your account.');
-      // }
+      if (!userCredential.user!.emailVerified) {
+        await signOut();
+        throw Exception('Please check your email to verify your account.');
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         throw Exception('No user found for that email.');
@@ -33,10 +34,8 @@ class AuthService {
       } else {
         throw Exception('An error occurred while signing up.');
       }
-    } on Exception catch (_) {
+    } catch (_) {
       rethrow;
-    } catch (e) {
-      throw Exception('An error occurred while signing in.');
     }
   }
 
@@ -61,16 +60,12 @@ class AuthService {
       } else {
         throw Exception('An error occurred while signing up.');
       }
-    } on Exception catch (_) {
+    } catch (_) {
       rethrow;
-    } catch (e) {
-      throw Exception('An error occurred while signing in.');
     }
   }
 
   Future<void> signOut() async => _firebaseAuth.signOut();
-
-  User? get currentUser => _firebaseAuth.currentUser;
 }
 
 final authServiceProvider = Provider((ref) {
